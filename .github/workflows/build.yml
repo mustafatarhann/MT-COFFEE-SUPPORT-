@@ -11,11 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Java Kurulumu (Java 11)
+      - name: Java Kurulumu (Java 17)
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Flutter SDK Yukle ve Ayarla
         run: |
@@ -23,13 +23,11 @@ jobs:
           echo "$HOME/flutter/bin" >> $GITHUB_PATH
           flutter doctor
 
-      - name: Gradle Onbellegini Temizle ve Bagimliliklari Yukle
+      - name: Bagimliliklari Yukle ve APK Olustur (Ozel Gradle User Home)
         run: |
-          rm -rf ~/.gradle
+          export GRADLE_USER_HOME=$(mktemp -d)
           flutter pub get
-
-      - name: APK Olustur
-        run: flutter build apk --release --no-pub
+          flutter build apk --release --no-pub
 
       - name: Artifacts Olarak Kaydet
         uses: actions/upload-artifact@v4
