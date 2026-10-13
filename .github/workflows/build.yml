@@ -11,27 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Java Kurulumu (Java 17)
+      - name: Java Kurulumu
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Flutter SDK Yukle, Izole Et ve APK Olustur
-        run: |
-          git clone https://github.com/flutter/flutter.git -b 3.24.0 --depth 1 ~/flutter
-          echo "$HOME/flutter/bin" >> $GITHUB_PATH
-          export PATH="$HOME/flutter/bin:$PATH"
-          
-          flutter doctor
-          
-          # Gradle önbelleğini izole bir klasöre alarak çakışmayı önliyoruz
-          export GRADLE_USER_HOME=$(mktemp -d)
-          
-          flutter pub get
-          flutter build apk --release 
+      - name: Flutter Kurulumu
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          cache: true
 
-      - name: Artifacts Olarak Kaydet
+      - name: Bağımlılıkları Yükle
+        run: flutter pub get
+
+      - name: APK Derle
+        run: flutter build apk --release
+
+      - name: APK'yı Yükle
         uses: actions/upload-artifact@v4
         with:
           name: app-release
