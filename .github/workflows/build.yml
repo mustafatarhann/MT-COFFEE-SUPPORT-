@@ -6,22 +6,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Java Kurulumu
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Flutter Kurulumu
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.0'
-          cache: true
+      - name: Java ve Flutter Ortamını Hazirla
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk
+          java -version
+          
+          git clone https://github.com/flutter/flutter.git -b 3.24.0 --depth 1 _flutter
+          echo "$GITHUB_WORKSPACE/_flutter/bin" >> $GITHUB_PATH
+          flutter doctor
 
       - name: Bağımlılıkları Yükle
         run: flutter pub get
