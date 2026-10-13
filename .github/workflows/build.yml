@@ -17,19 +17,16 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Flutter Kurulumu
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.0'
-          cache: true
-
-      - name: Gradle Onbellegini Temizle ve Bagimliliklari Yukle
+      - name: Flutter SDK Yukle ve Ayarla
         run: |
-          rm -rf ~/.gradle/caches/
-          flutter pub get
+          git clone https://github.com/flutter/flutter.git -b 3.24.0 --depth 1 ~/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+          flutter doctor
 
-      - name: APK Yapısını Yükle
-        run: flutter build apk --release --no-pub
+      - name: Bagimliliklari Yukle ve APK Olustur
+        run: |
+          flutter pub get
+          flutter build apk --release --no-pub
 
       - name: Artifacts Olarak Kaydet
         uses: actions/upload-artifact@v4
