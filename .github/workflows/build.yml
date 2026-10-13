@@ -23,10 +23,13 @@ jobs:
           echo "$HOME/flutter/bin" >> $GITHUB_PATH
           flutter doctor
 
-      - name: Bagimliliklari Yukle ve APK Olustur
+      - name: Gradle Onbellegini Tamamen Temizle ve Bagimliliklari Yukle
         run: |
+          rm -rf ~/.gradle
           flutter pub get
-          flutter build apk --release --no-pub
+
+      - name: APK Olustur
+        run: flutter build apk --release --no-pub
 
       - name: Artifacts Olarak Kaydet
         uses: actions/upload-artifact@v4
