@@ -11,23 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Java ve Flutter Ortamını Hazirla
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jdk
-          java -version
-          
-          git clone https://github.com/flutter/flutter.git -b 3.24.0 --depth 1 _flutter
-          echo "$GITHUB_WORKSPACE/_flutter/bin" >> $GITHUB_PATH
-          flutter doctor
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
-      - name: Bağımlılıkları Yükle
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          cache: true
+
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: APK Derle
+      - name: Build APK
         run: flutter build apk --release
 
-      - name: APK'yı Yükle
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
