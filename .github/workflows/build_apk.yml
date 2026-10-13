@@ -27,7 +27,7 @@ jobs:
       run: flutter pub get
 
     - name: APK Oluştur
-      run: flutter build apk --release
+      run: flutter build apk --release --refresh-dependencies
 
     - name: APK Yapısını Yükle
       uses: actions/upload-artifact@v4
