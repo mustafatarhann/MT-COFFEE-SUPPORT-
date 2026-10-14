@@ -27,7 +27,7 @@ jobs:
         run: flutter pub get
 
       - name: APK Derle
-        run: flutter build apk --release
+        run: flutter build apk --release --verbose
 
       - name: APK'yı Yükle
         uses: actions/upload-artifact@v4
