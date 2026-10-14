@@ -25,4 +25,3 @@ flutter:
 dependency_overrides:
   bcprov_jdk18on: ^1.78
 
-  bcprov_jdk18on: "1.78"
